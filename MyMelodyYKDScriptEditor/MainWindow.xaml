@@ -1,0 +1,22 @@
+﻿<Window x:Class="MyMelodyYKDScriptEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyMelodyYKDScriptEditor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <ListBox x:Name="scrBox" Margin="0,39,0,0" HorizontalAlignment="Left" Width="400" SelectionChanged="ScrBox_SelectionChanged"/>
+        <Menu x:Name="menu" Height="22" VerticalAlignment="Top">
+            <MenuItem x:Name="fileMenuItem" Header="File">
+                <MenuItem x:Name="loadHtx" Header="Load files" Click="LoadHtx_Click" />
+                <MenuItem x:Name="saveHtx" Header="Save files" Click="SaveHtx_Click" />
+            </MenuItem>
+            <MenuItem x:Name="commandsMenuItem" Header="New Command">
+                <MenuItem x:Name="dialogueCommandMenuItem" Header="Dialogue Command" Click="DialogueCommandMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+        <StackPanel x:Name="commandDataPanel" Margin="405,39,0,0"/>
+    </Grid>
+</Window>
