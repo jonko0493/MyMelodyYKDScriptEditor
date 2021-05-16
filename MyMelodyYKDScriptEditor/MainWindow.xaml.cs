@@ -112,7 +112,7 @@ namespace MyMelodyYKDScriptEditor
             }
             else if (type == typeof(FadeInCommand))
             {
-
+                commandDataPanel.Children.Add(new Label { Content = "No customization options." });
             }
             else if (type == typeof(TransitionCommand))
             {
