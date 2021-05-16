@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="scrBox" Margin="0,39,0,0" HorizontalAlignment="Left" Width="400" SelectionChanged="ScrBox_SelectionChanged"/>
+        <ListBox x:Name="scrBox" Margin="0,56,0,0" HorizontalAlignment="Left" Width="400" SelectionChanged="ScrBox_SelectionChanged"/>
         <Menu x:Name="menu" Height="22" VerticalAlignment="Top">
             <MenuItem x:Name="fileMenuItem" Header="File">
                 <MenuItem x:Name="loadHtx" Header="Load files" Click="LoadHtx_Click" />
@@ -17,6 +17,11 @@
                 <MenuItem x:Name="dialogueCommandMenuItem" Header="Dialogue Command" Click="DialogueCommandMenuItem_Click" />
             </MenuItem>
         </Menu>
-        <StackPanel x:Name="commandDataPanel" Margin="405,39,0,0"/>
+        <StackPanel x:Name="commandDataPanel" Margin="405,56,0,0"/>
+        <ToolBarTray HorizontalAlignment="Center" Height="29" Margin="0,22,0,0" VerticalAlignment="Top" Width="800">
+            <ToolBar x:Name="toolBar" HorizontalAlignment="Center" Height="45" VerticalAlignment="Center" Width="135">
+                <Button x:Name="DeleteCommandButton" Content="Delete Command" HorizontalAlignment="Left" VerticalAlignment="Top" Click="DeleteCommandButton_Click"/>
+            </ToolBar>
+        </ToolBarTray>
     </Grid>
 </Window>

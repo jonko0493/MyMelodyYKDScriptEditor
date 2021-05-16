@@ -392,7 +392,7 @@ namespace MyMelodyYKDScriptEditor
 
     public class FadeInCommand : IScrCommand
     {
-        public byte OpCode => 0x16;
+        public byte OpCode => 0x15;
 
         public byte[] Bytes { get; set; }
 

@@ -71,9 +71,22 @@ namespace MyMelodyYKDScriptEditor
             Scr.Commands.Insert(scrBox.SelectedIndex + 1, new DialogueCommand());
         }
 
+        private void DeleteCommandButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show($"Do you want to delete {scrBox.SelectedItem}?", "Deletion Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Scr.Commands.RemoveAt(scrBox.SelectedIndex);
+            }
+        }
+
         private void ScrBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             commandDataPanel.Children.Clear();
+
+            if (e.AddedItems.Count == 0)
+            {
+                return;
+            }
 
             Type type = e.AddedItems[0].GetType();
 
