@@ -94,10 +94,20 @@ namespace MyMelodyYKDScriptEditor
             if (type == typeof(DialogueCommand))
             {
                 var dialogueCommand = (DialogueCommand)e.AddedItems[0];
-                DialogueTextBox dialogueBox = new DialogueTextBox { Text = dialogueCommand.Dialogue, Command = dialogueCommand };
-                dialogueBox.TextChanged += DialogueBox_TextChanged;
-
-                commandDataPanel.Children.Add(dialogueBox);
+                DialogueTextBox[] dialogueBoxes = new DialogueTextBox[3];
+                for (int i = 0; i < dialogueBoxes.Length; i++)
+                {
+                    string dialogueLine = dialogueCommand.DialogueLines.Count <= i ? "" : dialogueCommand.DialogueLines[i];
+                    dialogueBoxes[i] = new DialogueTextBox
+                    {
+                        Text = dialogueLine,
+                        LineNumber = i,
+                        Command = dialogueCommand,
+                        MaxLength = 12, // number of characters per line in game's text boxes
+                    };
+                    dialogueBoxes[i].TextChanged += DialogueBox_TextChanged;
+                    commandDataPanel.Children.Add(dialogueBoxes[i]);
+                }
             }
             else if (type == typeof(WaitCommand))
             {
@@ -213,7 +223,18 @@ namespace MyMelodyYKDScriptEditor
         private void DialogueBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var box = (DialogueTextBox)sender;
-            box.Command.Dialogue = box.Text;
+            if (string.IsNullOrEmpty(box.Text))
+            {
+                box.Command.DialogueLines.RemoveAt(box.LineNumber);
+            }
+            else if (box.LineNumber >= box.Command.DialogueLines.Count)
+            {
+                box.Command.DialogueLines.Add(box.Text);
+            }
+            else
+            {
+                box.Command.DialogueLines[box.LineNumber] = box.Text;
+            }
             scrBox.Items.Refresh();
         }
 
@@ -246,7 +267,6 @@ namespace MyMelodyYKDScriptEditor
             var box = (BackgroundComboBox)sender;
             box.Command.Background = (string)box.SelectedItem;
             box.BackgroundImage = GetImageAsResource(box.Command.Background);
-
             scrBox.Items.Refresh();
         }
 

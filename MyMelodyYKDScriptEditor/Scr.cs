@@ -31,7 +31,7 @@ namespace MyMelodyYKDScriptEditor
 
                 switch (data[i])
                 {
-                    case 0x00: // Dialogue command opcode
+                    case 0x00:
                         commands.Add(new DialogueCommand { Dialogue = htx.Lines[data[i + 1] + (data[i + 2] << 8)] });
                         i += 3;
                         break;
@@ -153,6 +153,44 @@ namespace MyMelodyYKDScriptEditor
         public byte OpCode { get; }
 
         public byte[] ToByteCode(Htx htx);
+    }
+
+    public class DialogueCommand : IScrCommand, INotifyPropertyChanged
+    {
+        public byte OpCode => 0x00;
+
+        public string Dialogue { get => string.Join('↓', DialogueLines); 
+            set 
+            {
+                DialogueLines = value.Split('↓', StringSplitOptions.RemoveEmptyEntries).Take(3).ToList();
+            }
+        }
+
+        public List<string> DialogueLines { get; set; }
+
+        public short DialogueIndex { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Dialogue: {Dialogue}";
+        }
+
+        public byte[] ToByteCode(Htx htx)
+        {
+            var dialogueBytes = BitConverter.GetBytes(DialogueIndex);
+            return new byte[] { 0x23, OpCode, dialogueBytes[0], dialogueBytes[1] };
+        }
     }
 
     public class BackgroundCommand : IScrCommand
@@ -322,40 +360,6 @@ namespace MyMelodyYKDScriptEditor
             { "Baku (Silent)", 0x0015 },
             { "Baku (Talking)", 0x0016 },
         };
-    }
-
-    public class DialogueCommand : IScrCommand, INotifyPropertyChanged
-    {
-        public byte OpCode => 0x00;
-
-        private string _dialogue;
-        private short _dialogueIndex;
-
-        public string Dialogue { get { return _dialogue; } set { _dialogue = value; OnPropertyChanged("Dialogue"); } }
-
-        public short DialogueIndex { get { return _dialogueIndex; } set { _dialogueIndex = value; OnPropertyChanged("DialogueIndex"); } }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public override string ToString()
-        {
-            return $"Dialogue: {Dialogue}";
-        }
-
-        public byte[] ToByteCode(Htx htx)
-        {
-            var dialogueBytes = BitConverter.GetBytes(DialogueIndex);
-            return new byte[] { 0x23, OpCode, dialogueBytes[0], dialogueBytes[1] };
-        }
     }
 
     public class TransitionCommand : IScrCommand

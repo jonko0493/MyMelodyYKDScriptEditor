@@ -9,6 +9,7 @@ namespace MyMelodyYKDScriptEditor
 {
     public class DialogueTextBox : TextBox
     {
+        public int LineNumber { get; set; }
         public DialogueCommand Command { get; set; }
     }
 
