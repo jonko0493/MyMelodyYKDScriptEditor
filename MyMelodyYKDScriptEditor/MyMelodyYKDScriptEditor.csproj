@@ -7,7 +7,45 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="bg\bg01.png" />
+    <None Remove="bg\bg02.png" />
+    <None Remove="bg\bg03.png" />
+    <None Remove="bg\bg04.png" />
+    <None Remove="bg\bg05.png" />
+    <None Remove="bg\bg06.png" />
+    <None Remove="bg\bg07.png" />
+    <None Remove="bg\bg08.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="bg\bg01.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bg\bg02.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bg\bg03.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bg\bg04.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bg\bg05.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bg\bg06.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bg\bg07.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bg\bg08.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

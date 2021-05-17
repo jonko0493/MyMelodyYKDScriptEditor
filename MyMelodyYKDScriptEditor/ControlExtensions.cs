@@ -34,4 +34,22 @@ namespace MyMelodyYKDScriptEditor
     {
         public SoundCommand Command { get; set; }
     }
+    
+    public class TransitionComboBox : ComboBox
+    {
+        public TransitionCommand Command { get; set; }
+    }
+
+    public class BackgroundComboBox : ComboBox
+    {
+        public BackgroundCommand Command { get; set; }
+        public Image BackgroundImage { get; set; }
+    }
+
+    public class CharacterComboBox : ComboBox
+    {
+        public CharacterCommand Command { get; set; }
+        public ComboBox PositionBox { get; set; }
+    }
+
 }

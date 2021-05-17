@@ -67,10 +67,16 @@ namespace MyMelodyYKDScriptEditor
                         break;
 
                     case 0x16:
+                        string transition = TransitionCommand.TransitionToByteMap
+                            .FirstOrDefault(l => l.Value == data[i + 2]).Key;
+                        if (string.IsNullOrEmpty(transition))
+                        {
+                            throw new FileFormatException($"Encountered unknown transition 0x{data[i + 2]:X2}");
+                        }
                         commands.Add(new TransitionCommand
                         {
                             UnknownByte = data[i + 1],
-                            Transition = data[i + 2],
+                            Transition = transition,
                             Speed = (short)(data[i + 3] + (data[i + 4] << 8))
                         });
                         i += 5;
@@ -167,14 +173,14 @@ namespace MyMelodyYKDScriptEditor
 
         public static Dictionary<string, byte> FileToByteMap = new Dictionary<string, byte>()
         {
-            { "bg0001.png", 0x01 },
-            { "bg0002.png", 0x02 },
-            { "bg0003.png", 0x03 },
-            { "bg0004.png", 0x04 },
-            { "bg0005.png", 0x05 },
-            { "bg0006.png", 0x06 },
-            { "bg0007.png", 0x07 },
-            { "bg0008.png", 0x08 },
+            { "bg01.png", 0x01 },
+            { "bg02.png", 0x02 },
+            { "bg03.png", 0x03 },
+            { "bg04.png", 0x04 },
+            { "bg05.png", 0x05 },
+            { "bg06.png", 0x06 },
+            { "bg07.png", 0x07 },
+            { "bg08.png", 0x08 },
         };
     }
 
@@ -357,19 +363,31 @@ namespace MyMelodyYKDScriptEditor
         public byte OpCode => 0x16;
 
         public byte UnknownByte { get; set; }
-        public byte Transition { get; set; }
+        public string Transition { get; set; }
         public short Speed { get; set; }
 
         public byte[] ToByteCode(Htx htx)
         {
             var speedBytes = BitConverter.GetBytes(Speed);
-            return new byte[] { 0x23, OpCode, UnknownByte, Transition, speedBytes[0], speedBytes[1] }; // endianness
+            return new byte[] { 0x23, OpCode, UnknownByte, TransitionToByteMap[Transition], speedBytes[0], speedBytes[1] }; // endianness
         }
 
         public override string ToString()
         {
             return $"Transition '{Transition}' at speed {Speed}";
         }
+
+        public static Dictionary<string, byte> TransitionToByteMap = new Dictionary<string, byte>
+        {
+            { "Transparent Wipe Right (Clean Screen)", 0x02 },
+            { "Transparent Wipe Right (Draw New)", 0x03 },
+            { "Pink Wipe Left (Clean)", 0x04 },
+            { "Pink Wipe Left", 0x05 },
+            { "White Center Wipe Out", 0x06 },
+            { "White Center Wipe In (Needs Fade In)", 0x07 },
+            { "White Curtains Out (Transparent)", 0x0A },
+            { "White Curtains Out (White)", 0x0B },
+        };
     }
 
     public class WaitCommand : IScrCommand

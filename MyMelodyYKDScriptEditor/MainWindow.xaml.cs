@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -129,11 +130,41 @@ namespace MyMelodyYKDScriptEditor
             }
             else if (type == typeof(TransitionCommand))
             {
+                var transitionCommand = (TransitionCommand)e.AddedItems[0];
 
+                TransitionComboBox transitionBox = new TransitionComboBox
+                {
+                    Command = transitionCommand,
+                };
+                foreach (string transition in TransitionCommand.TransitionToByteMap.Keys)
+                {
+                    transitionBox.Items.Add(transition);
+                }
+                transitionBox.SelectedItem = transitionCommand.Transition;
+                transitionBox.SelectionChanged += TransitionBox_SelectionChanged;
+
+                commandDataPanel.Children.Add(transitionBox);
             }
             else if (type == typeof(BackgroundCommand))
             {
+                var backgroundCommand = (BackgroundCommand)e.AddedItems[0];
 
+                BackgroundComboBox backgroundBox = new BackgroundComboBox
+                {
+                    Command = backgroundCommand,
+                };
+                foreach (string background in BackgroundCommand.FileToByteMap.Keys)
+                {
+                    backgroundBox.Items.Add(background);
+                }
+                backgroundBox.SelectedItem = backgroundCommand.Background;
+
+                backgroundBox.BackgroundImage = GetImageAsResource(backgroundCommand.Background);
+
+                backgroundBox.SelectionChanged += BackgroundBox_SelectionChanged;
+
+                commandDataPanel.Children.Add(backgroundBox);
+                commandDataPanel.Children.Add(backgroundBox.BackgroundImage);
             }
             else if (type == typeof(CharacterCommand))
             {
@@ -145,10 +176,19 @@ namespace MyMelodyYKDScriptEditor
             }
         }
 
-        private void SoundBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private Image GetImageAsResource(string imageName)
         {
-            var box = (SoundComboBox)sender;
-            box.Command.Sound = (string)box.SelectedItem;
+            return new Image
+            {
+                Source = new BitmapImage(new Uri($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name}" +
+                    $";component/bg/{imageName}", UriKind.Absolute)),
+            };
+        }
+
+        private void DialogueBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var box = (DialogueTextBox)sender;
+            box.Command.Dialogue = box.Text;
             scrBox.Items.Refresh();
         }
 
@@ -162,10 +202,26 @@ namespace MyMelodyYKDScriptEditor
             }
         }
 
-        private void DialogueBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void SoundBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var box = (DialogueTextBox)sender;
-            box.Command.Dialogue = box.Text;
+            var box = (SoundComboBox)sender;
+            box.Command.Sound = (string)box.SelectedItem;
+            scrBox.Items.Refresh();
+        }
+
+        private void TransitionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var box = (TransitionComboBox)sender;
+            box.Command.Transition = (string)box.SelectedItem;
+            scrBox.Items.Refresh();
+        }
+
+        private void BackgroundBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var box = (BackgroundComboBox)sender;
+            box.Command.Background = (string)box.SelectedItem;
+            box.BackgroundImage = GetImageAsResource(box.Command.Background);
+
             scrBox.Items.Refresh();
         }
     }
