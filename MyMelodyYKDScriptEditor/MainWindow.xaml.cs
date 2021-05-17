@@ -69,12 +69,40 @@ namespace MyMelodyYKDScriptEditor
 
         private void DialogueCommandMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new DialogueCommand());
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new DialogueCommand { DialogueLines = new List<string>() });
+        }
+        private void WaitCommandMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new WaitCommand { TimeInHundredthsSeconds = 0 });
+        }
+        private void soundCommandMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new SoundCommand { Sound = SoundCommand.SoundToByteMap.First().Key });
+        }
+        private void fadeInCommandMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new FadeInCommand { Bytes = new byte[] { 0, 0, 0, 0 } });
+        }
+        private void transitionCommandMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new TransitionCommand { UnknownByte = 0, Transition = TransitionCommand.TransitionToByteMap.First().Key, Speed = 1 });
+        }
+        private void backgroundCommandMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new BackgroundCommand { UnknownByte = 0, Background = BackgroundCommand.FileToByteMap.First().Key });
+        }
+        private void characterCommandMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new CharacterCommand { CharacterName = CharacterCommand.NameToByteMap.First().Key, CharacterPosition = CharacterCommand.Position.LEFT_FACING_RIGHT });
+        }
+        private void endCommandMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scr.Commands.Insert(scrBox.SelectedIndex + 1, new EndCommand());
         }
 
         private void DeleteCommandButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show($"Do you want to delete {scrBox.SelectedItem}?", "Deletion Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (scrBox.SelectedIndex >= 0 && MessageBox.Show($"Do you want to delete {scrBox.SelectedItem}?", "Deletion Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Scr.Commands.RemoveAt(scrBox.SelectedIndex);
             }

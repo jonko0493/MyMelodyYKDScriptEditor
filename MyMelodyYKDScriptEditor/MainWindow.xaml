@@ -15,6 +15,13 @@
             </MenuItem>
             <MenuItem x:Name="commandsMenuItem" Header="New Command">
                 <MenuItem x:Name="dialogueCommandMenuItem" Header="Dialogue Command" Click="DialogueCommandMenuItem_Click" />
+                <MenuItem x:Name="waitCommandMenuItem" Header="Wait Command" Click="WaitCommandMenuItem_Click" />
+                <MenuItem x:Name="soundCommandMenuItem" Header="Sound Command" Click="soundCommandMenuItem_Click" />
+                <MenuItem x:Name="fadeInCommandMenuItem" Header="Fade-In Command" Click="fadeInCommandMenuItem_Click" />
+                <MenuItem x:Name="transitionCommandMenuItem" Header="Transition Command" Click="transitionCommandMenuItem_Click" />
+                <MenuItem x:Name="backgroundCommandMenuItem" Header="Background Command" Click="backgroundCommandMenuItem_Click" />
+                <MenuItem x:Name="characterCommandMenuItem" Header="Character Command" Click="characterCommandMenuItem_Click" />
+                <MenuItem x:Name="endCommandMenuItem" Header="End Command" Click="endCommandMenuItem_Click" />
             </MenuItem>
         </Menu>
         <StackPanel x:Name="commandDataPanel" Margin="405,56,0,0"/>
