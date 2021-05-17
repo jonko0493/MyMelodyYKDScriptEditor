@@ -49,7 +49,6 @@ namespace MyMelodyYKDScriptEditor
     public class CharacterComboBox : ComboBox
     {
         public CharacterCommand Command { get; set; }
-        public ComboBox PositionBox { get; set; }
     }
 
 }

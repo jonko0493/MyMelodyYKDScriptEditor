@@ -168,11 +168,36 @@ namespace MyMelodyYKDScriptEditor
             }
             else if (type == typeof(CharacterCommand))
             {
+                var characterCommand = (CharacterCommand)e.AddedItems[0];
 
+                CharacterComboBox characterBox = new CharacterComboBox
+                {
+                    Command = characterCommand,
+                };
+                foreach (string character in CharacterCommand.NameToByteMap.Keys)
+                {
+                    characterBox.Items.Add(character);
+                }
+                characterBox.SelectedItem = characterCommand.CharacterName;
+                characterBox.SelectionChanged += CharacterBox_SelectionChanged;
+
+                CharacterComboBox positionBox = new CharacterComboBox
+                {
+                    Command = characterCommand,
+                };
+                foreach (string position in Enum.GetNames(typeof(CharacterCommand.Position)))
+                {
+                    positionBox.Items.Add(position);
+                }
+                positionBox.SelectedItem = Enum.GetName(typeof(CharacterCommand.Position), characterCommand.CharacterPosition);
+                positionBox.SelectionChanged += PositionBox_SelectionChanged;
+
+                commandDataPanel.Children.Add(characterBox);
+                commandDataPanel.Children.Add(positionBox);
             }
             else if (type == typeof(EndCommand))
             {
-
+                commandDataPanel.Children.Add(new Label { Content = "No customization options." });
             }
         }
 
@@ -222,6 +247,20 @@ namespace MyMelodyYKDScriptEditor
             box.Command.Background = (string)box.SelectedItem;
             box.BackgroundImage = GetImageAsResource(box.Command.Background);
 
+            scrBox.Items.Refresh();
+        }
+
+        private void CharacterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var box = (CharacterComboBox)sender;
+            box.Command.CharacterName = (string)box.SelectedItem;
+            scrBox.Items.Refresh();
+        }
+
+        private void PositionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var box = (CharacterComboBox)sender;
+            box.Command.CharacterPosition = (CharacterCommand.Position)Enum.Parse(typeof(CharacterCommand.Position), (string)box.SelectedItem);
             scrBox.Items.Refresh();
         }
     }
