@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyMelodyYKDScriptEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="OMMYKD Script Editor" Height="450" Width="800">
     <Grid>
         <ListBox x:Name="scrBox" Margin="0,56,0,0" HorizontalAlignment="Left" Width="400" SelectionChanged="ScrBox_SelectionChanged"/>
         <Menu x:Name="menu" Height="22" VerticalAlignment="Top">
